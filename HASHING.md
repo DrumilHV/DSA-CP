@@ -30,4 +30,7 @@
    - add a prefix sum only once , if you find it second time , do not update it as we want longest sub arr, key : prefix sum , value: index
    - if prefix sum - k is in hashmap, the the length of the longest sub aray is idx - mp[k-prefixSum] + 1;
 7. Same as above but shortest
-   - always update the prefix sum index
+   - always update the prefix sum index.
+8. find the max Distance between same numbers.
+   - sol: make a hashmap, store the index of the element only if it comes first time.
+   - if you find the same element again, then check if the distance between the two is greater than maxD and update it.
