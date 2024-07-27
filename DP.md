@@ -111,3 +111,14 @@ dp[0][2] = costs[0][2],
 }
 return min({dp[n-1][0],dp[n-1][1],dp[n-1][2]})
 ```
+
+9. [cVacation](https://atcoder.jp/contests/dp/tasks/dp_c) you have 3 activities , you cant do 2 same activities in on consicutive days, find the max happness in given days .
+
+- eg:
+  3 <br>
+  10 40 70 <br>
+  20 50 80 <br>
+  30 60 90 <br>
+  op: 210
+
+- same as above
