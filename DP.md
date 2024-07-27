@@ -89,4 +89,25 @@ for(i = 1;i<n;i++){
 - for (int i = 4; i <= n; ++i) {
   dp[i] = min(abs(cost[i] - cost[i - 1]) + dp[i - 1], abs(cost[i] - cost[i - 3]) + dp[i - 3]);
 
-8. you
+8. [Paint house](https://www.youtube.com/watch?v=-w67-4tnH5U). You are given a 3 houses and cost to color them with 3 colors , you can't color two adjcent houses with same color. For example, costs [0][0] is the cost of painting house e with the color red; costs [1][2] is the cost of painting house 1 with color green, and so on.. .Return the minimum cost to paint all houses.
+
+- eg: Input: costs = [[17,2,17], [16,16,5], [14, 3,19]]
+
+  - Output: 10
+  - Explanation: Paint house 0 into blue, paint house 1 into green, paint house 2 into blue.
+  - Minimum cost: 2 + 5 + 3 = 10.
+
+- sol: make a 2d dp.
+
+```cpp
+int n = costs.size();
+dp[0][0] = costs[0][0],
+dp[0][1] = costs[0][1],
+dp[0][2] = costs[0][2],
+ for(int i =0;i<n;i++){
+   dp[i][0] = costs[i][0] + min(dp[i-1][1], dp[i-1][2]);
+   dp[i][1] = costs[i][1] + min(dp[i-1][0], dp[i-1][2]);
+   dp[i][2] = costs[i][2] + min(dp[i-1][1], dp[i-1][0]);
+}
+return min({dp[n-1][0],dp[n-1][1],dp[n-1][2]})
+```
