@@ -1,4 +1,9 @@
-1. find maximum subseq sum , such that no two elements are adjcent in the array.[HOUSE ROBBER-I](https://leetcode.com/problems/house-robber/description/)
+# Dynamic Programming
+
+## Always start with dp[0] (if only 1 element in array ), dp[1] (if only 2 elements in array). **_NESSASECITY IS MOTHER OF INVESION, DONT MAKE CASES YOURSELF, GO WITH THE FLOW YOU WILL FIND OUT ALL THE REQ TEST CASES._**
+
+1. [HOUSE ROBBER-I](https://leetcode.com/problems/house-robber/description/)
+   find maximum subseq sum , such that no two elements are adjcent in the array.
    - sol: make a dp array,
    - dp[0] = max(0, arr[0]), dp[1] = max(dp[0], arr[1]);
    - for 2.....n
@@ -83,3 +88,5 @@ for(i = 1;i<n;i++){
   - dp[3] = abs(arr[2]-arr[3])+dp[2]
 - for (int i = 4; i <= n; ++i) {
   dp[i] = min(abs(cost[i] - cost[i - 1]) + dp[i - 1], abs(cost[i] - cost[i - 3]) + dp[i - 3]);
+
+8. you

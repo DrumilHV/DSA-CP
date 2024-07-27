@@ -45,3 +45,6 @@
 3. Use Matrix when Nodes < edges (dense graph).
 4. which ever smaller use that.
 5. Time to calculate all edges matrix O(M\*N), list O(N);
+6. BFS:
+    - node where you start doing bfs -> source node. 
+    
