@@ -10,3 +10,7 @@
 - do binary search on the diff, start with diff = 0, to arr[n-1]- arr[0](because you already sorted the arra).
 - Time complexity => O(N\*log(limit)+N\*logN)
 
+2. [Vowels Game in a String](https://leetcode.com/problems/vowels-game-in-a-string/description/)
+
+- alice starts first ,and removes odd no of vovels, bob plays second and removes even no of string, return if alice can win this game if both play optimally.
+- sol: count the no of vovels , if vovels >=1 alice will always win.
