@@ -122,3 +122,30 @@ return min({dp[n-1][0],dp[n-1][1],dp[n-1][2]})
   op: 210
 
 - same as above
+
+10. given a number find the min cost to convert it to 1, with follwoin condition
+
+- the cost to reduce it by 1 is x,
+- if divisible by 3 the cost is y,
+- if divisible by 5 the cost is z,
+- if divisible by 7 the cost is v,
+
+- sol: (very easy)
+  - make dp[N]
+  - dp[1] = 0
+
+```cpp
+for(int i =0;i<=N;i++){
+   int v1 = dp[N-1] + x;
+   int v2 = N%3 ==0 ? dp[N/3] + y : INT_MAX;
+   int v3 = N%5 ==0 ? dp[N/5] + Z : INT_MAX;
+   int v2 = N%7 ==0 ? dp[N/7] + V : INT_MAX;
+   dp[i] = min({v1,v2,v3,v4});
+}
+return dp[N];
+```
+
+# Partition DP
+
+2. make harmonious array. You are given a array , harmonious such that
+   eg, [1,8, 4,5 ,2, 6, 1] => [1,8], [4,5,2,6,1]
