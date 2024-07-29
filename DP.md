@@ -89,6 +89,10 @@ for(i = 1;i<n;i++){
 - for (int i = 4; i <= n; ++i) {
   dp[i] = min(abs(cost[i] - cost[i - 1]) + dp[i - 1], abs(cost[i] - cost[i - 3]) + dp[i - 3]);
 
+## 2d DP
+
+## • Whenever a move is making a problem for you , make a state for it
+
 8. [Paint house](https://www.youtube.com/watch?v=-w67-4tnH5U). You are given a 3 houses and cost to color them with 3 colors , you can't color two adjcent houses with same color. For example, costs [0][0] is the cost of painting house e with the color red; costs [1][2] is the cost of painting house 1 with color green, and so on.. .Return the minimum cost to paint all houses.
 
 - eg: Input: costs = [[17,2,17], [16,16,5], [14, 3,19]]
@@ -145,7 +149,66 @@ for(int i =0;i<=N;i++){
 return dp[N];
 ```
 
+11. you are given an array, when you visit an idx , you add it to the sum, you can go +2 or -1 and you can visit all idx only once. Find the min sum to go out of array .
+
+- eg: [2,5,8], 2 ->8 -> 5 ->out
+
+- SOL:
+  - observations: you can not go back two times continously.
+  - you can go forward 2 times continously.
+  - move -1 is giving problem, so make a serperate state for it.
+  - you can't, to index 1, or 2 from index 0 [one based indexing].
+  - dp[i][2]=> forward state.
+  - dp[i][1]=> backward state.
+  - at end you have 3 possible ans,
+    - dp[n][2] (forward state),
+    - dp[n-1][2] (forward)
+    - dp[n-1][1] (backward state),
+  - backwards state is i-1 to i+1 to i so dp[i][backwards] = dp([i-1][backwards]+ b[i+1]) + b[i];
+  - forward state is i-2 to i or backward state to i so dp[i][forward] = min(dp[i-2][forward], dp[i-2][backwards]);
+
+```cpp
+int my(int k,int r,int g){
+
+    return min(k,max(r,g));
+}
+
+
+int main() {
+    int n ;
+    cin>>n ;
+    int b[n+1] = {0};
+
+    int i = 1 ;
+    while(i<=n){
+        cin>>b[i] ;
+        i++;
+    }
+
+    int dp[n+1][5];
+
+    dp[1][2] = b[1] ;
+    dp[1][1] = 100000000 ;
+    dp[2][2] = 100000000 ;
+    dp[2][1] = dp[1][2] + b[2] + b[3] ;
+
+
+    i = 3 ;
+    while(i<=n-1){
+
+
+        dp[i][2] = b[i] + min(dp[i-2][1],dp[i-2][2]);
+        dp[i][1] = b[i] + b[i+1] + dp[i-1][2] ;
+
+        i++;
+    }
+    dp[i][2] = b[n] + min(dp[i-2][2],dp[i-2][1]);
+    dp[i][1] = 100000000 ;
+    cout<<my(dp[n][2],dp[n-1][2],dp[n-1][1]);
+
+```
+
 # Partition DP
 
-2. make harmonious array. You are given a array , harmonious such that
+1. make harmonious array. You are given a array , harmonious such that
    eg, [1,8, 4,5 ,2, 6, 1] => [1,8], [4,5,2,6,1]
