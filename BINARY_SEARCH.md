@@ -297,3 +297,53 @@ while(start<=end){
 }
 return letters[start];
 ```
+
+8. [Search Insert Position](https://leetcode.com/problems/search-insert-position/description/)
+
+```cpp
+int low=0;
+int high=nums.size();
+int mid;
+if(target>nums[high-1]){
+    return high;
+}
+while(low<=high){
+        mid=(low+high)/2;
+    if(nums[mid]==target){
+        return mid;
+    }
+
+    if(target<nums[mid]){
+    high=mid-1;
+    }else{
+    low=mid+1;
+    }
+}
+    return  low;
+```
+
+9. [find in matrix](https://leetcode.com/problems/search-a-2d-matrix/submissions/1340474663/)
+
+```cpp
+int start = 0;
+int row = matrix.size();
+int col = matrix[0].size();
+int end = row*col-1;
+int currRow = 0;
+int currCol = 0;
+int mid = start + (end-start)/2;
+while(start<= end){
+    mid = start + (end-start)/2;
+    currRow = mid / col;
+    currCol = mid % col;
+    if(matrix[currRow][currCol]==target){
+        return true;
+    }
+    if(target< matrix[currRow][currCol]){
+        end = mid-1;
+    }else{
+        start = mid + 1;
+    }
+}
+return false;
+```
