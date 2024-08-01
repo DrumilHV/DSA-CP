@@ -1,10 +1,24 @@
 1.  find first and last occurance of a given number.
+
     - make two binary srach fn() first Occ and last Occ
+    - while (Start <= end)
     - do std binary serch, l<=r , but in first occ , when nums[mind]==target => ans = mid, end = mid-1;
-    - do std binary serch, l<=r , but in last occ , when nums[mind]==target => ans = mid, start = mid+1;
+
+    ```cpp
+    else if(target < nums[mid]){
+    e = mid -1;
+
+    }
+    else if(target > nums[mid]){
+        s = mid + 1;
+    }
+    ```
+
+    - do std binary serch, l<=r , but in last occ , when nums[mind]==target => ans = mid, start = mid+1;(same as above for the last occ)
     - ans = -1 in both cases , return first and last occ .
     - time complexity log2(n) + log2(n) = 2\*O(log(n)) orr just O(log(n));
     - space complexity O(1);
+
 2.  upper bound:
 
 ```cpp
@@ -170,6 +184,102 @@ double findNthRoot(int n, int m){ //time Complexity : O(10^k * M)
     }
     return l;
 }
+// Time Complextity: O(10^k * M)*(log N)
+
+// or
+int NthRoot(int n, int m) {
+    //Use Binary search on the answer space:
+    int low = 1, high = m;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        int midN = func(mid, n, m);
+        if (midN == 1) {
+            return mid;
+        }
+        else if (midN == 0) low = mid + 1;
+        else high = mid - 1;
+    }
+    return -1;
+}
+// O(logN),
+
 ```
 
-Time Complextity: O(10^k \* M)\*(log N)
+- square Root till I'th decimal
+
+```cpp
+int start = 0, end = number;
+    int mid;
+    float ans;
+    while (start <= end) {
+        mid = (start + end) / 2;
+        if (mid * mid == number) {
+            ans = mid;
+            break;
+        }
+        if (mid * mid < number) {
+            start = mid + 1;
+            ans = mid;
+        }
+        else {
+            end = mid - 1;
+        }
+    }
+    float increment = 0.1;
+    for (int i = 0; i < precision; i++) {
+        while (ans * ans <= number) {
+            ans += increment;
+        }
+        ans = ans - increment;
+        increment = increment / 10;
+    }
+    return ans;
+```
+
+6. [Median in a row-wise sorted Matrix](https://www.geeksforgeeks.org/problems/median-in-a-row-wise-sorted-matrix1527/1)
+
+-
+
+```
+  [[1, 3, 5],
+  [2, 6, 9],
+  [3, 6, 9]]
+  when in array form
+  [1, 2, 3, 3, 5, 6, 6, 9, 9]
+   0, 1, 2, 3, 4, 5, 6, 7, 8
+   median  = 5 , idx = 4
+
+
+```
+
+- you check how many numbers are less than current mid
+- if no of elements < total elements /2 then move back.
+- if no of elements > total elements /2 then move forward.
+- use upper boud in each row to find the number of elements less than mid in each row.
+
+```cpp
+int start = 0, end = (int)1e9;
+int mid = start + (end-start)/2;
+int median = 0;
+int total =R*C;
+int lessThanEqual = 0;
+while(start<=end){
+    mid = start + (end-start)/2;
+    lessThanEqual = 0;
+    for(int i =0;i<R;i++){
+        int ub = upper_bound(matrix[i].begin(), matrix[i].end(), mid) - matrix[i].begin();
+        lessThanEqual+=ub;
+    }
+    if(lessThanEqual > total/2){
+        median = mid;
+        end = mid-1;
+    }else{
+        start = mid+1;
+    }
+}
+return median;
+```
+
+- time complexity: O(log(1e9) \* Rows \* log(col))
+- log(1e9) search space
+- Row\* log(Col) -> we find upper boud for each row for mid
