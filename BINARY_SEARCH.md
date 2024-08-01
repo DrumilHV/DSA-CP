@@ -347,3 +347,29 @@ while(start<= end){
 }
 return false;
 ```
+
+10. [House robber - IV](https://leetcode.com/problems/house-robber-iv/)
+
+```cpp
+int start = 0, end= 1e9,ans= 1e9, mid = start + (end-start)/2;
+int n = nums.size();
+
+int count = 0;
+while(start<=end){
+    count = 0;
+    mid = start + (end-start)/2;
+    for(int i = 0;i<n;i++){
+        if(nums[i]<=mid){
+            count++;
+            i++;
+        }
+    }
+    if(count>=k){
+        ans = min(ans, mid);
+        end = mid -1;
+    }else{
+        start = mid +1;
+    }
+}
+return ans;
+```
