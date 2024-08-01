@@ -238,8 +238,6 @@ int start = 0, end = number;
 
 6. [Median in a row-wise sorted Matrix](https://www.geeksforgeeks.org/problems/median-in-a-row-wise-sorted-matrix1527/1)
 
--
-
 ```
   [[1, 3, 5],
   [2, 6, 9],
@@ -248,8 +246,6 @@ int start = 0, end = number;
   [1, 2, 3, 3, 5, 6, 6, 9, 9]
    0, 1, 2, 3, 4, 5, 6, 7, 8
    median  = 5 , idx = 4
-
-
 ```
 
 - you check how many numbers are less than current mid
@@ -283,3 +279,21 @@ return median;
 - time complexity: O(log(1e9) \* Rows \* log(col))
 - log(1e9) search space
 - Row\* log(Col) -> we find upper boud for each row for mid
+
+7. [upper bound letters](https://leetcode.com/problems/find-smallest-letter-greater-than-target/);
+
+```cpp
+int start = 0;
+int end   = letters.size()-1;
+int mid   = start + (end-start)/2;
+if(target>=letters[end]) return letters[0];
+while(start<=end){
+    mid   = start + (end-start)/2;
+    if(letters[mid] <= target){
+        start = mid+1;
+    }else{
+        end = mid - 1;
+    }
+}
+return letters[start];
+```
