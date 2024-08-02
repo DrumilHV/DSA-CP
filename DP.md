@@ -210,5 +210,41 @@ int main() {
 
 # Partition DP
 
+### General concept of solving PARTITION DP => DP[I] will tell total number of partition till i in the array
+
+### fix the last part.
+
+- EG: when you have an array how many ways to partition it ?
+- DP[0] = 1
+- size = 1, [1] => [1] 1 partition,
+- size = 2, [1,2] => [1] | [2] ,[1,2], 2 partition
+- size = 3, [1,2,3] => [1] | [2,3], [1,2] | [3],[1] | [2] | [3], [1,2,3] , 4 partition
+- size = 4, [1,2,3,4] => we can start to generalize if we put
+  - ...|... [4] => DP[3]
+  - ...|... [3,4] => DP[2]
+  - ...|... [2,3,4] => DP[1]
+  - ...|... [1,2,3,4] => DP[0]
+  - => DP[4] = DP[3] + DP[2] + DP[1] + DP[0];
+  - **_dp[i] = dp[i-1] + dp[i-2] + ... + dp[0]_**
+
+1. [Find the total number of ways to divide the array such that each part is good. Definition of good = depends on the question = sum of each part<=m; (Assuming all arrays elements>=0)](https://www.youtube.com/watch?v=o7i-IX8TKWI)
+
+- iterate through out the array
+- then form j = i to 0 keep adding arr[i] to sum , if sum <=k, update dp[i] += dp[j-1] (because you keep i seperate and add dp[j-1] cus j = i);
+
+```cpp
+for (int i = 1; i <= n; i++) {
+  int sum = 0;
+  for (int j = i; j >= 1; j--) {
+    sum += b[j];
+    if (sum <= k) {
+        dp[i] += dp[j - 1];
+    } else {
+        break;
+    }
+  }
+}
+```
+
 1. make harmonious array. You are given a array , harmonious such that
    eg, [1,8, 4,5 ,2, 6, 1] => [1,8], [4,5,2,6,1]
