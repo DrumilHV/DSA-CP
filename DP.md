@@ -246,5 +246,137 @@ for (int i = 1; i <= n; i++) {
 }
 ```
 
-1. make harmonious array. You are given a array , harmonious such that
-   eg, [1,8, 4,5 ,2, 6, 1] => [1,8], [4,5,2,6,1]
+2. Just tell true or false; tell true if it is possible to divide the array in a partition such that each part is good. [i…………….j] is good if and only if := b[i] = abs(i-j)
+
+- eg: [4,2,8,1] -> bad because, there should be 4 numbers after 4 but only 3 are found.
+- so make arr[0] = 3 , so 3 numbers after 3 will make it good.
+- you check form i (any) to j (anything less than i), if i -> j good && dp[j-1] also good then dp[i] = true;
+  [1...........j-1, j ,.....,i,..........n]
+  now i to j good
+  if(dp[j-1]) also good then arr [1 to i ] -> good
+- now check this for all i , 1 to n
+- return dp[n] if entire array is good.
+
+```cpp
+for(i=1;i<=n;i++){
+  // dp[i] = return true such that it’s possible to divide the array into good parts.
+  sum = 0
+  for(j=i;j>=1;j--){ //last part is [j....i]
+    if(b[j]==i-j){ //[j…..i] is good.
+        if(dp[j-1]==true){//[1……j-1] is yummy
+          dp[i]=true; //[1………i] is yummy
+        }
+    }
+  }
+}
+return dp[n].
+```
+
+- **_Optimization 1_**: use a hash map to store <arr[j] + j, freq>,
+
+  - if i exits in map then i -> j is valid.
+  - then check if dp[j-1] is true or false
+  - when you are at idx i, check if there exists any value in hashmap for i
+
+- **_Optimization 2_**: use a hash map to store <arr[j] + j, dp[j-1]>,
+  - when you are at idx i, check if there exists any value in hashmap for i (i = arr[j] + j (or) i-j = b[j])
+  - **if i exists in hash map then j->i is valid.**
+  - if so you can check, j -> i is valid and j-1 is valid or not.
+- **_Optimization 3_**: start traversing from backwards.
+
+  - dp[n+1] = true;
+  - dp[n] = false (single element cant be true, cus even if [1], still you need someting like [1,2] for it to be true);
+  - now start from behind n->1.
+  - if(dp[i + arr[i] + 1]==true) -> i -> n == true && (dp[i + arr[i]+ _1_]) 0 -> i == true;
+
+```cpp
+  vector<bool> dp(n + 2, false); // dp array with size n+1 (using n+2 for dp[n+1] indexing)
+  dp[n + 1] = true; // Base case
+
+  for (int i = n; i >= 1; i--) {
+    dp[i] = false;
+    if (i + b[i] + 1 <= n + 1 && dp[i + b[i] + 1] == true) {
+      dp[i] = true;
+    }
+  }
+  if (dp[1]) {
+      cout << "It is possible to divide the array into good parts." << endl;
+  } else {
+      cout << "It is not possible to divide the array into good parts." << endl;
+  }
+```
+
+3. find the min moves to make the array harmounious. <br> Harmonious array is the one which has the exact number of elements follwoin it as on arr[i]. you can delete any number.
+
+- eg: [1,8,3,4,7,6] => [1,8], [3,4,7,6] => one element after arr[0] (=1), 3 elements after arr[2] (=3)
+- to make the array harmonious, you need to delete the min no of elements.
+- for each array index you have to make arr[i] + i + 1 th index harmonious.
+- or make delete this index and, try to find best possible ans dp[i+1];
+- now you have to check the min no of moves required to make array harmonious.
+  `dp[i] = min(1+dp[i+1],dp[i+b[i]+1]) `
+  ```cpp
+  vector<int> dp(n + 1);
+  dp[n+1] = 0;
+  dp[n] = 1;
+  for(int i = n-1;i>=1;i++){
+    if(i + b[i] + 1 <= n + 1){
+      dp[i] = min(1+dp[i+1],dp[i+b[i]+1])
+    }else{
+      dp[i] = INT_MAX;
+    }
+  }
+  ```
+- but this is not the best possible ans.
+- eg: [3,55,8,2,1] => according to the above logic, this will try to delete arr[arr[0] + 0 + 1] => arr[4] , but you can also delete 55 and the array can become good.
+- you can delete 1 number and take dp[arr[i] + i + 1] => 0 + dp[arr[i] + i + 1] (1 offset because you are going for arr[i] + i + 1, so if you delete arr[i]+i+1 , you are not deleting anything, you just add dp[arr[i]+1] so 0+ dp[arr[i]+1])
+- or you can delete 2 numbers next to arr[i] and take 2 extra from dp[arr[i] + i + 2 ]=> 1 + dp[arr[i] + i + 2] (here you delete number right next to arr[i] and to compensiate for 1 deleting you take 1 more while picking dp[arr[i] + i + 2])
+- or you can delete 3 numbers next to arr[i] and take 3 extra from dp[arr[i] + i + 3 ]=> 2 + dp[arr[i] + i + 3 ] ((here you delete 2 numbers right next to arr[i] and to compensiate for 2 deleting you take 2 more while picking dp[arr[i] + i + 3]))
+- and so onnn ....., so you take min of all .
+
+```cpp
+vector<int> dp(n + 2, 0);  // Array dp with 1-based indexing and size n+2 for edge cases
+
+dp[n + 1] = 0;  // Initialize dp[n+1] = 0
+dp[n] = 1;      // Initialize dp[n] = 1
+
+for (int i = n - 1; i >= 1; i--) {
+  int u = 1 + dp[i + 1];  // Case when you delete the ith element
+  int l = b[i];
+  int v = INT_MAX;
+  int y = 0;
+  for (int g = i + l + 1; g <= n + 1; g++) {
+    v = min(v, y + dp[g]);
+    y++;
+  }
+
+  dp[i] = min(u, v);  // dp[i] is the minimum of u and v
+}
+cout << "The result is: " << dp[1] << endl;
+```
+
+- the above is a O(n^2) sol , we need to make it an O(n) sol.
+
+- [to make it O(n) sol](https://youtu.be/o7i-IX8TKWI?si=kqsLLQ3epuh7K_RF&t=5939)
+
+```cpp
+vector<int> dp(n + 11, 0);
+vector<int> s(n + 11, 0);
+
+dp[n + 1] = 0;
+
+dp[n] = 1;
+s[n] = dp[n];
+
+for (int i = n - 1; i >= 1; i--) {
+  int u = 1 + dp[i + 1];
+
+  int l = b[i];
+  int v = INT_MAX;
+  if(i+l+1<=n+1){
+  v = s[i + l + 1];
+  }
+  dp[i] = min(u, v);
+  s[i] = min(dp[i], 1 + s[i + 1]);
+}
+cout << dp[1] << endl;
+```
