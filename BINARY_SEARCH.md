@@ -421,3 +421,53 @@ int solve(int n, int k, vector<int> &stalls) {
     return ans;
     }
 ```
+
+12. [Minimize the Maximum Difference of Pairs](https://leetcode.com/problems/minimize-the-maximum-difference-of-pairs/description/) Given an array, return the max diff b/w p pairs of numbers with least diff
+
+- eg: Example 1:
+  Input: nums = [10,1,2,7,1,3], p = 2
+  Output: 1
+  Explanation: The first pair is formed from the indices 1 and 4, and the second pair is formed from the indices 2 and 5.
+  The maximum difference is max(|nums[1] - nums[4]|, |nums[2] - nums[5]|) = max(0, 1) = 1. Therefore, we return 1.
+- sol:
+  - sort() array.
+  - start = 0, end = nums[n-1]-nums[0];
+  - find mid, and then iterate orver the enitre array to check if there > p pairs of nums such that diff b/w them is more than mid.
+  - make sure that pairs will be nums[i]-nums[i-1], and its better to have a flag, if you consider an i now , later you shold not cosider it.
+
+```cpp
+int check(vector<int>& nums, int p, int mid){
+    int in = 0;
+    int count = 0;
+    int n = nums.size();
+    for(int i =1;i<n;i++){
+        if(in){
+            in = 0;
+            continue;
+        }
+        if(nums[i]-nums[i-1]<=mid){
+            in = 1;
+            count++;
+        }
+    }
+    return count>= p;
+    }
+int minimizeMax(vector<int>& nums, int p) {
+    sort(nums.begin(), nums.end());
+    int start = 0;
+    int n = nums.size();
+    int end = nums[n-1]-nums[0];
+    int mid = start + (end-start)/2;
+    int ans = 0;
+    while(start<=end){
+        mid = start + (end-start)/2;
+        if(check(nums, p, mid)){
+            ans = mid;
+            end = mid-1;
+        }else{
+            start = mid+1;
+        }
+    }
+    return ans;
+    }
+```

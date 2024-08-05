@@ -208,6 +208,10 @@ int main() {
 
 ```
 
+12. You are given 2 sting of numbers "128272" , "5893092" , you can only swap same index of both string 3 rd pos of 1st string with 3rd pos of 2nd string, swap as many char as you can then return min diff b/w strings.
+
+- Observation: NEVER SWAP ALL STRINGS, IT WILL BECOME THE SAME AGAIN.
+
 # Partition DP
 
 ### General concept of solving PARTITION DP => DP[I] will tell total number of partition till i in the array
@@ -228,6 +232,8 @@ int main() {
   - **_dp[i] = dp[i-1] + dp[i-2] + ... + dp[0]_**
 
 1. [Find the total number of ways to divide the array such that each part is good. Definition of good = depends on the question = sum of each part<=m; (Assuming all arrays elements>=0)](https://www.youtube.com/watch?v=o7i-IX8TKWI)
+
+(question for next 4 sol: https://docs.google.com/document/d/1klrAqCSjHzMCGWLzmsXNHxeIc_b7OUXGOAwuYYz9tH0/edit)
 
 - iterate through out the array
 - then form j = i to 0 keep adding arr[i] to sum , if sum <=k, update dp[i] += dp[j-1] (because you keep i seperate and add dp[j-1] cus j = i);
