@@ -471,3 +471,47 @@ int minimizeMax(vector<int>& nums, int p) {
     return ans;
     }
 ```
+
+13. given an array stocks where stocks[i] represent i th industry. the task is to distribut the stocks such a way that each portfoio has exactly k distinct type of stock where k is given . each stock is only included only once in each portfolio. Find the the max numbers of portfolio that can be created.
+
+```cpp
+boolean check(long g,long[]b,int k){
+    long total=g*k;
+    for(int i=1;i<b.length;i++)
+    {
+        if(b[i]>=g)
+        {
+            total=total-g;
+        }
+        else
+        {
+            total=total-b[i];
+        }
+    }
+    if(total<=0) return true;
+    return false;
+}
+void main (String[] args) {
+    int n, k;
+    cin>>n>>k;
+    long sum=0;
+    int i=1;
+    long b[n+1];
+    while(i<=n){
+        cin>>b[i];
+        i=i+1;
+    }
+    long lo=1;
+    long hi=(long)1e9;
+    long ans=0;
+    while(lo<=hi){
+        long mid=(lo+hi)/2;
+        if(check(mid,b,k)==true)
+        {
+            ans=mid;
+            lo=mid+1;
+        }
+        else hi=mid-1;
+    }
+	}
+```
