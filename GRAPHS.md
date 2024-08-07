@@ -46,5 +46,4 @@
 4. which ever smaller use that.
 5. Time to calculate all edges matrix O(M\*N), list O(N);
 6. BFS:
-    - node where you start doing bfs -> source node. 
-    
+   - node where you start doing bfs -> source node.

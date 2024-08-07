@@ -66,10 +66,8 @@ int nonSpecialCount(int l, int r) {
             }
         }
     }
-
     // Total numbers in the range [l, r]
     int totalCount = r - l + 1;
-
     // Calculate non-special numbers
     return totalCount - cnt;
 }
