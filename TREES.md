@@ -171,6 +171,30 @@ vector<int> postorderTraversal(TreeNode* root) {
 }
 ```
 
+# LEVEL ORDER TRAVERSAL
+
+````cpp
+vector<vector<int>> levelOrder(TreeNode* root) {
+    vector<vector<int>> ans;
+    if(!root) return ans;
+    queue<TreeNode*> q;
+    q.push(root);
+    while(!q.empty()){
+        vector<int> level;
+        int size = q.size();
+        for(int i =0;i<size;i++){
+            TreeNode * temp  = q.front();
+            q.pop();
+            if(temp->left) q.push(temp->left);
+            if(temp->right) q.push(temp->right);
+            level.push_back(temp->val);
+        }
+        ans.push_back(level);
+    }
+    return ans;
+    }
+```
+
 1. RIGHT / LEFT VIEW OF TREE.
 
 - use preorder traversal of tree.
@@ -187,7 +211,7 @@ void helper(TreeNode * root, vector<int> & rv, int level){
     helper(root->right, rv, level+1);
     helper(root->left, rv, level+1);
     }
-```
+````
 
 2. bottom view of tree
 
@@ -221,7 +245,7 @@ vector<int> bottomView(Node* root){
     }
 ```
 
-- top view
+3. top view
 
 ```cpp
 vector<int> topView(Node* root){
@@ -255,4 +279,123 @@ vector<int> topView(Node* root){
 
     return ans;
 }
+```
+
+4. Boundary elemets
+
+- do left
+- do leaves (you can do it many times if req)
+- do right
+
+```cpp
+bool isleaf(Node* node) {
+        return (node->left == nullptr && node->right == nullptr);
+}
+
+void addleftboundary(Node* root, vector<int>& res) {
+    Node* cur = root->left;
+    while (cur) {
+        if (!isleaf(cur)) res.push_back(cur->data);
+        if (cur->left) cur = cur->left;
+        else cur = cur->right;
+    }
+}
+
+void addrightboundary(Node* root, vector<int>& res) {
+    Node* cur = root->right;
+    vector<int> tmp;
+    while (cur) {
+        if (!isleaf(cur)) tmp.push_back(cur->data);
+        if (cur->right) cur = cur->right;
+        else cur = cur->left;
+    }
+    for (int i = tmp.size() - 1; i >= 0; i--) {
+        res.push_back(tmp[i]);
+    }
+}
+
+void addleaves(Node* root, vector<int>& res) {
+    if (isleaf(root)) {
+        res.push_back(root->data);
+        return;
+    }
+    if (root->left) addleaves(root->left, res);
+    if (root->right) addleaves(root->right, res);
+}
+
+vector<int> boundary(Node* root) {
+    vector<int> res;
+    if (root == nullptr) {
+        return res;
+    }
+    if (!isleaf(root)) res.push_back(root->data);
+    addleftboundary(root, res);
+    addleaves(root, res);
+    addrightboundary(root, res);
+    return res;
+}
+```
+
+5. DIAMETER OF A BINARY TREE
+
+```cpp
+int diameterOfBinaryTree(TreeNode* root) {
+    int diameter = 0;
+    height(root, diameter);
+    return diameter;
+}
+int height(TreeNode *root, int &diameter){
+    if(root==NULL){return 0;}
+    int lh = height(root->left,diameter);
+    int rh = height(root->right, diameter);
+    diameter = max(diameter, lh+rh);
+    return 1+max(lh,rh);
+}
+```
+
+6. RETURN IF TREES ARE SYMETRICALL (MIRROR IMAGE)
+
+```cpp
+bool isMirror(TreeNode * t1, TreeNode * t2){
+    if(t1==NULL && t2==NULL) return true;
+    if(t1 == NULL || t2 == NULL) return false;
+
+    return (t1->val == t2->val) && isMirror(t1->left, t2->right) && isMirror(t1->right, t2->left);
+}
+```
+
+7. MAXIMUM WIDTH OF TREE: MAX DIFF B/W ANY TOW NODES OF THE SAME LEVEL
+
+```CPP
+int widthOfBinaryTree(TreeNode* root) {
+    long long int ans = 0;
+    queue<pair<TreeNode *,int>> q;
+    int tempCount = 1;
+    q.push({root,tempCount++});
+    int maxW = INT_MIN;
+    while(!q.empty()){
+        int n = q.size();
+        int start = 0;
+        int end = 0;
+        for(int i =0;i<n;i++){
+            TreeNode * currNode  = q.front().first;
+            int currIdx = q.front().second;
+            q.pop();
+            if(i==0){
+                start = currIdx;
+            }
+            if(i==n-1){
+                end  = currIdx;
+            }
+            if(currNode->left){
+                q.push({currNode->left, (ll) 2*currIdx + 1});
+            }
+            if(currNode->right){
+                q.push({currNode->right, (ll) 2*currIdx + 2});
+            }
+        }
+        maxW = max(maxW, end-start+1);
+    }
+    return maxW;
+    }
 ```
