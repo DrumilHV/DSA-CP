@@ -399,3 +399,58 @@ int widthOfBinaryTree(TreeNode* root) {
     return maxW;
     }
 ```
+
+8. CHECK IF BINRAY TREE IS BALANCED
+
+```CPP
+bool isBalanced(TreeNode* root) {
+    return dfsHeight(root) != -1;
+}
+int dfsHeight(TreeNode *root){
+    if(root == NULL) return 0;
+    int lh = dfsHeight(root->left);
+    if(lh==-1) return -1;
+    int rh = dfsHeight(root->right);
+    if(rh==-1) return -1;
+    if(abs(lh-rh)>1) return -1;
+    return max(lh,rh)+1;
+}
+```
+
+9. LEAST COMMON ANCISTOR
+
+- do dfs
+- if any p || q found return that node
+- if root == null return null
+- there will have 2 conditions only either null or node , so if null => path is over
+- if getting a node => found the correct thing
+- if both left traversal and right traversal are not null => this is LCA
+- if left == null, right is LCA
+- else left is LCA
+
+```cpp
+TreeNode * solve(TreeNode* root , TreeNode* p, TreeNode* q){
+    if(root == NULL) return NULL;
+    if(root  == p || root  == q ) return root;
+
+    TreeNode* left  = solve(root->left,p,q);
+    TreeNode* right = solve(root->right,p,q);
+
+    if(left != NULL && right!=NULL) return root;
+
+    if(left == NULL) return right;
+    return left;
+    }
+```
+
+10. MAX PATH SUM
+
+```cpp
+int mSum(TreeNode * root, int &sum){
+    if(root==NULL) return 0;
+    int ls = max(0,mSum(root->left, sum));
+    int rs = max(0,mSum(root->right, sum));
+    sum = max(sum, ls+rs+root->val);
+    return max(ls,rs)+root->val;
+}
+```
