@@ -80,6 +80,7 @@ vector<int> bfsOfGraph(int V, vector<int> adj[]) {
         int node = q.front();
         q.pop();
         bfs.push_back(node);
+
         // traverse for all its neighbours
         for(auto it : adj[node]) {
             // if the neighbour has previously not been visited,

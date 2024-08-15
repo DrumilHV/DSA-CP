@@ -454,3 +454,63 @@ int mSum(TreeNode * root, int &sum){
     return max(ls,rs)+root->val;
 }
 ```
+
+11. [Time for Tree to burn](https://leetcode.com/problems/amount-of-time-for-binary-tree-to-be-infected/description/) : every node and burns one second, the next second its adjcent nodes burn. return the time for burning the entire tree.
+
+- make tree to graph.
+- so you can travers to parent nodes also when you have to .
+- do bfs to keep track to time, no of levels starting from start node to end node is time .
+- or do dfs to find the time / no of levels.
+
+```cpp
+    vector <vector<int>> graph;
+    vector <bool> vis;
+    int res = 0;
+    void go(TreeNode* root){
+        if(!root) return;
+
+        int val = root->val;
+        TreeNode* leftNode = root->left;
+        TreeNode* rightNode = root->right;
+        if(leftNode){
+            int l = leftNode->val;
+            graph[val].push_back(l);
+            graph[l].push_back(val);
+        }
+        if(rightNode){
+            int r = rightNode->val;
+            graph[val].push_back(r);
+            graph[r].push_back(val);
+        }
+        go(leftNode);
+        go(rightNode);
+    }
+    void dfs(int node, int w){
+        vis[node] = true;
+        res = max(res, w);
+        for(auto child: graph[node]){
+            if(!vis[child])
+            dfs(child, w + 1);
+        }
+    }
+    int amountOfTime(TreeNode* root, int start) {
+        graph.resize(1e5 + 7);
+        vis.resize(1e5 + 7);
+        go(root);
+        dfs(start, 0);
+        return res;
+    }
+```
+
+12. [Children sum property](https://www.geeksforgeeks.org/problems/children-sum-parent/1) : check if all the parent node are sum of their childern nodes if so return 1 eles 0.
+
+```cpp
+int isSumProperty(Node *root){
+    if(!root) return 1;
+    if(!root->left && !root->right) return 1;
+    int left = 0, right =0;
+    if(root->left) left = root->left->data;
+    if(root->right) right = root->right->data;
+    return root->data == left+right && isSumProperty(root->left) && isSumProperty(root->right);
+}
+```
