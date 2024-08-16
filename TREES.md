@@ -514,3 +514,48 @@ int isSumProperty(Node *root){
     return root->data == left+right && isSumProperty(root->left) && isSumProperty(root->right);
 }
 ```
+
+13. print nodes of at a distance of k from given node
+
+- convert to graph
+- use dfs/bfs to find the levels of distace of other nodes to given nodes
+
+```cpp
+vector<vector<int>> graph;
+vector<bool> v;
+vector<int> ans;
+void makeGraph(TreeNode * root){
+    if(!root) return ;
+    TreeNode * left = root->left;
+    TreeNode * right = root->right;
+    int val = root->val;
+    if(left){
+        int l = left->val;
+        graph[val].push_back(l);
+        graph[l].push_back(val);
+    }
+    if(right){
+        int r = right->val;
+        graph[val].push_back(r);
+        graph[r].push_back(val);
+    }
+    makeGraph(left);
+    makeGraph(right);
+}
+void dfs(int tgt, int level, int k){
+    v[tgt] = true;
+    if(level==k){
+        ans.push_back(tgt);
+    }
+    for(auto i: graph[tgt]){
+        if(!v[i]) dfs(i, level+1, k);
+    }
+}
+vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+    graph.resize(507);
+    v.resize(507, false);
+    makeGraph(root);
+    dfs(target->val, 0, k);
+    return ans;
+}
+```
