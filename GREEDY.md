@@ -14,3 +14,7 @@
 
 - alice starts first ,and removes odd no of vovels, bob plays second and removes even no of string, return if alice can win this game if both play optimally.
 - sol: count the no of vovels , if vovels >=1 alice will always win.
+
+3. You are given 2 sting of numbers "128272" , "5893092" , you can only swap same index of both string 3 rd pos of 1st string with 3rd pos of 2nd string, swap as many char as you can then return min diff b/w strings.
+
+- Observation: NEVER SWAP ALL STRINGS, IT WILL BECOME THE SAME AGAIN.

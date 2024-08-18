@@ -208,9 +208,43 @@ int main() {
 
 ```
 
-12. You are given 2 sting of numbers "128272" , "5893092" , you can only swap same index of both string 3 rd pos of 1st string with 3rd pos of 2nd string, swap as many char as you can then return min diff b/w strings.
+12. you are given 2 array s B and C, you have to maximize the sum , but you can t take 3 consicuitive elemetns from the same array.
 
-- Observation: NEVER SWAP ALL STRINGS, IT WILL BECOME THE SAME AGAIN.
+- Make 2 state for storing the elemets
+- dp[i][1][1] - till i'th idx, we select first element from first array and one element from first array
+- dp[i][1][2] - till i'th idx, we select first element frist array and 2'nd element from second array like
+
+```
+       i
+[1,2,3,4]
+[5,6,7,8]
+
+dp[i][1][2]-> 4 + 7
+dp[i][1][1]-> 4 + 8
+dp[i][2][1]-> 8 + 3
+```
+
+```cpp
+ll dp[100000+5][5][5];
+int main() {
+  //base-cases
+  dp[1][1][1] = b[1] ;
+  dp[1][1][2] = b[1] ;
+  dp[1][2][1] = d[1] ;
+  dp[1][2][2] = d[1] ;
+  //dp[index][][]
+  i = 2 ;
+  while(i<=n){
+    dp[i][1][1] = b[i] + b[i-1] + max(dp[i-2][2][2],dp[i-2][2][1]);
+    dp[i][1][2] = b[i] + d[i-1] + mxi(dp[i-2][1][1],dp[i-2][1][2],dp[i-2][2][1]);
+    dp[i][2][1] = d[i] + b[i-1] + mxi(dp[i-2][2][1],dp[i-2][2][2],dp[i-2][1][2]);
+    dp[i][2][2] = d[i] + d[i-1] + max(dp[i-2][1][2],dp[i-2][1][1]);
+    i++;
+  }
+  cout<<mx(dp[n][1][1],dp[n][1][2],dp[n][2][2],dp[n][2][1]);
+```
+
+13.
 
 # Partition DP
 
