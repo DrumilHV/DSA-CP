@@ -244,7 +244,25 @@ int main() {
   cout<<mx(dp[n][1][1],dp[n][1][2],dp[n][2][2],dp[n][2][1]);
 ```
 
-13.
+13. Setphen is doing internship , he can hard task or easy task on a any day . he does hard task only if he has not done anything on prevous day. Hard task make more money.
+
+- make 3 states easy , hard, noting .
+- 1 - eays, 2- hard, 3 noting
+- remember you do hard task only if you did noting pervous day => dp[i][2] = h[i] + dp[i-1][3] // for doing noting previous day.
+
+```cpp
+dp[1][1] = easy[1] ; //dp[][1]====easy
+dp[1][2] = hard[1] ; //dp[][2]=====hrd
+dp[1][3] = 0 ;
+i = 2 ;
+while(i<=n){
+  dp[i][1] = easy[i] + max(dp[i-1][1],max(dp[i-1][2],dp[i-1][3]));
+  dp[i][2] = hard[i] + dp[i-1][3] ; //did nothing on i-1 dy
+  dp[i][3] = 0 + max(dp[i-1][1],max(dp[i-1][2],dp[i-1][3]));
+  i++;
+}
+cout<<max(dp[n][1],max(dp[n][2],dp[n][3]));
+```
 
 # Partition DP
 
