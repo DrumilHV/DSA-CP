@@ -264,6 +264,43 @@ while(i<=n){
 cout<<max(dp[n][1],max(dp[n][2],dp[n][3]));
 ```
 
+14. [House robber-3](https://leetcode.com/problems/house-robber-iii/description/) all houses are in a binary tree form , you can t rob adjcent houses, return the max.
+
+- classic pick not pick stratergy .
+
+```cpp
+ map<TreeNode* ,int>mp;
+    bool check(TreeNode* node)
+    {
+        if(mp.find(node)!=mp.end())
+        return 1;
+        return 0;
+    }
+    int rob(TreeNode* root)
+    {
+       if(!root)
+       return 0;
+
+       if(check(root))
+       {
+            return mp[root];
+       }
+       int pick=root->val;
+       if(root->left)
+       {
+            pick+=rob(root->left->left)+rob(root->left->right);
+       }
+       if(root->right)
+       {
+            pick+=rob(root->right->left)+rob(root->right->right);
+       }
+       int notpick=0;
+       notpick=rob(root->left)+rob(root->right);
+
+       return mp[root]=max(pick,notpick);
+    }
+```
+
 # Partition DP
 
 ### General concept of solving PARTITION DP => DP[I] will tell total number of partition till i in the array

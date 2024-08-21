@@ -94,3 +94,36 @@ vector<int> bfsOfGraph(int V, vector<int> adj[]) {
     return bfs;
 }
 ```
+
+## BFS WITH ADJCENCY MATRIX
+
+```CPP
+    void bfs(int node, vector<vector<int>> &isConnected, vector<int> &visited, int n){
+    visited[node] = 1;
+    queue<int> q;
+    q.push(node);
+    while (!q.empty()){
+        int x = q.front();
+        q.pop();
+        for (int i = 0; i < n; i++){
+            if (!visited[i] and isConnected[x][i]){
+                q.push(i);
+                visited[i] = 1;
+            }
+        }
+    }
+}
+int findCircleNum(vector<vector<int>> &isConnected){
+    int n = isConnected.size();
+    vector<int> visited(n, 0);
+    int count = 0;
+
+    for (int i = 0; i < n; i++){
+        if (!visited[i]){
+            bfs(i, isConnected, visited, n);
+            count++;
+        }
+    }
+    return count;
+}
+```
