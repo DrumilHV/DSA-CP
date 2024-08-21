@@ -59,6 +59,28 @@ while(low<=high){
 return ans;
 ```
 
+## using upper boud
+
+```cpp
+ vector<int>::iterator upper1, upper2;
+
+    // std :: upper_bound
+    upper1 = upper_bound(v.begin(), v.end(), 35);
+    upper2 = upper_bound(v.begin(), v.end(), 45);
+
+    cout << "\nupper_bound for element 35 is at position : "
+         << (upper1 - v.begin());
+    cout << "\nupper_bound for element 45 is at position : "
+         << (upper2 - v.begin());
+    int upper1 = upper_bound(arr, arr + 5, 35) - arr;
+    int upper2 = upper_bound(arr, arr + 5, 45) - arr;
+
+    cout << "\nupper_bound for element 35 is at position : "
+         << (upper1);
+    cout << "\nupper_bound for element 45 is at position : "
+         << (upper2);
+```
+
 3. [koko eating banana](https://www.geeksforgeeks.org/problems/koko-eating-bananas/1?page=1&company=Uber&sortBy=submissions)
 
 ```cpp
