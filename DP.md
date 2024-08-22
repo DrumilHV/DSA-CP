@@ -296,6 +296,146 @@ int rob(TreeNode* root){
 }
 ```
 
+15. Find the no of ways to make 1,2,4,6 from coins of 1,2,4,6
+
+- sol:
+- no ways to make 1 = 1
+- no ways to make 2 = 1+1
+- no of ways to make 3 = dp[2] + dp[1]
+- no ways to make 4 = no ways such that 1 is at end => dp[2] + no ways such that 2 is at the end = dp[1]
+- no of ways to make 5 => dp[5] = dp[1]+dp[4]+dp[3]
+- no ways to make 6 = no ways such that 1 is at the end => dp[5] + no of ways 2 is at end dp[4] + no of ways 3 is at end = dp[3] + no of ways to have 4 at end = dp[2] + no of ways to have 5 at end = dp[1]
+
+### if you only have 1, 2, 4, 6 use only those no dont use 3,5
+
+```cpp
+  long long dp[n + 1] = {0};
+  dp[0] = 1;
+  dp[1] = 1;
+
+  for (int i = 2; i <= n; i++) {
+
+      dp[i] = dp[i - 1] + dp[i - 2];
+
+      if(i>=4)
+    dp[i] += dp[i-4];
+
+    if(i>=6)
+    dp[i] += dp[i-6];
+  }
+
+  cout << dp[n] << endl;
+```
+
+- actual problem only at max tow 4 s can be used
+- we put dp[i-4][0] because when ever we make a state we put that number at end
+- when we do dp[i][1] we put 4 at end, so now we only have one way to put use 4 -> 0
+- when we do dp[i][2] we put one 4 at end , so now we have one 4 at disposal so we do + dp[i-4][1]
+
+```cpp
+vector<vector<long long>> dp(n+1, vector<long long>(3, 0));
+
+// Base cases
+dp[0][0] = 1;
+
+for (int i = 1; i <= n; i++) {
+  if (i-1 >= 0) dp[i][0] += dp[i-1][0];
+  if (i-2 >= 0) dp[i][0] += dp[i-2][0];
+  if (i-6 >= 0) dp[i][0] += dp[i-6][0];
+
+  if (i-1 >= 0) dp[i][1] += dp[i-1][1];
+  if (i-2 >= 0) dp[i][1] += dp[i-2][1];
+  if (i-4 >= 0) dp[i][1] += dp[i-4][0];
+  if (i-6 >= 0) dp[i][1] += dp[i-6][1];
+
+  if (i-1 >= 0) dp[i][2] += dp[i-1][2];
+  if (i-2 >= 0) dp[i][2] += dp[i-2][2];
+  if (i-4 >= 0) dp[i][2] += dp[i-4][1];
+  if (i-6 >= 0) dp[i][2] += dp[i-6][2];
+}
+// cout<<dp[n][0]<<" ds "<<dp[n][1]<<" fds "<<dp[n][2]<<endl;
+// The final answer
+long long result = dp[n][0] + dp[n][1] + dp[n][2];
+cout << result << endl;
+```
+
+16. unique ways to reach the last row and col, you can move only down and right, you are standing on a grid you have to find out all the number ways to reach the final row and col.
+
+- you can reach any cell in first row and first col only in one way
+
+```cpp
+int uniquePaths(int m, int n) {
+  vector<vector<int> > dp(m, vector<int>(n,0));
+  for(int i =0;i<m;i++){
+    dp[i][0] = 1;
+  }
+  for(int i =0;i<n;i++){
+    dp[0][i] = 1;
+  }
+  for(int i =1;i<m;i++){
+    for(int j = 1;j<n;j++){
+      dp[i][j] +=  dp[i-1][j]+ dp[i][j-1];
+      cout<<dp[i][j]<<" ";
+    }
+    cout<<endl;
+  }
+  return dp[m-1][n-1];
+}
+```
+
+17. same as above , but this time there are obstricals in path , if (vector<vector<int>>& obstacleGrid) obstacleGrid[i][j]==1 there is obstriction and you can t go there. now return the min no of paths to reach the end.
+
+```cpp
+int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+  int m = obstacleGrid.size();
+  int n = obstacleGrid[0].size();
+  vector<vector<int>> dp(m, vector<int>(n, 0));
+  bool flag = true;
+  for(int i=0;i<m;i++){
+    if(obstacleGrid[i][0]==1) flag = false;
+    dp[i][0] = flag ? 1 : 0;
+  }
+  flag = true;
+  for(int i=0;i<n;i++){
+    if(obstacleGrid[0][i]==1) flag = false;
+    dp[0][i] = flag ? 1 : 0;
+  }
+  for(int i =1 ;i<m;i++){
+    for(int j =1;j<n;j++){
+      if(obstacleGrid[i][j] == 1) {
+        dp[i][j] = 0;
+        continue;
+      }
+      dp[i][j] = dp[i-1][j] + dp[i][j-1];
+    }
+  }
+  return dp[m-1][n-1];
+}
+```
+
+18. MIN PATH SUM, you are given a maze , you have to take the min amount of path sum to reach the end, you can go down and right only, the gird has cost of each cell
+
+```cpp
+int minPathSum(vector<vector<int>>& grid) {
+  int m = grid.size();
+  int n = grid[0].size();
+  vector<vector<int>> dp(m, vector<int> (n, 0));
+  dp[0][0] = grid[0][0];
+  for(int i =1;i<m;i++){
+    dp[i][0] = grid[i][0]+dp[i-1][0];
+  }
+  for(int i =1;i<n;i++){
+    dp[0][i] = grid[0][i]+dp[0][i-1];
+  }
+  for(int i =1;i<m;i++){
+    for(int j = 1;j<n;j++){
+      dp[i][j] = grid[i][j] + min(dp[i-1][j], dp[i][j-1]);
+    }
+  }
+  return dp[m-1][n-1];
+}
+```
+
 # Partition DP
 
 ### General concept of solving PARTITION DP => DP[I] will tell total number of partition till i in the array
@@ -353,9 +493,9 @@ for(i=1;i<=n;i++){
   sum = 0
   for(j=i;j>=1;j--){ //last part is [j....i]
     if(b[j]==i-j){ //[j…..i] is good.
-        if(dp[j-1]==true){//[1……j-1] is yummy
-          dp[i]=true; //[1………i] is yummy
-        }
+      if(dp[j-1]==true){//[1……j-1] is yummy
+        dp[i]=true; //[1………i] is yummy
+      }
     }
   }
 }
