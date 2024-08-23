@@ -72,3 +72,93 @@ int nonSpecialCount(int l, int r) {
     return totalCount - cnt;
 }
 ```
+
+3. MODULO OPERATIONS:
+
+- 1. (a+b)%c = ((a%c)+(b%c))%c
+- 2. (a*b)%c = ((a%c)*(b%c))%c
+- 3. (a-b)%c = ((a%c)-(b%c)+c)%c
+- 4. (a/b)%c = ((a%c)?(b%c))%c
+
+4.  Divisors of a number:
+
+```cpp
+void printDivisorsOptimal(int n){
+    cout << "The Divisors of " << n << " are:" << endl;
+    for (int i = 1; i <= sqrt(n); i++)
+        if (n % i == 0) {
+            cout << i << " ";
+            if (i != n / i)
+                cout << n / i << " ";
+        }
+    cout << "\n";
+}
+```
+
+5. Binray Exponencitaion
+
+```cpp
+int power(int x, int y, int p) {
+    // Initialize result
+    int res = 1;
+
+    // Update x if it is more than or equal to p
+    x = x % p;
+
+    // In case x is divisible by p
+    if (x == 0)
+        return 0;
+
+    while (y > 0) {
+        // If y is odd, multiply x with result
+        if (y % 2 == 1)
+            res = (res * x) % p;
+
+        // y must be even now
+        y = y >> 1; // y = y/2
+        x = (x * x) % p;
+    }
+    return res;
+}
+
+int main() {
+    // Find 9^5 mod 1000000007
+    std::cout << power(9, 5, 1000000007) << std::endl;
+    return 0;
+}
+```
+
+6. Prime Factorization & Divisors
+
+```cpp
+using namespace std;
+
+void primeFactors(int n)
+{
+    // Print the number of 2s that divide n
+    while (n % 2 == 0) {
+        cout << 2 << " ";
+        n /= 2;
+    }
+    // n must be odd at this point. So we can skip one
+    // element (Note i = i +2)
+    for (int i = 3; i <= sqrt(n); i += 2) {
+        // While i divides n, print i and divide n
+        while (n % i == 0) {
+            cout << i << " ";
+            n /= i;
+        }
+    }
+    // This condition is to handle the case when n is a
+    // prime number greater than 2
+    if (n > 2) {
+        cout << n;
+    }
+}
+// Test the function
+int main()
+{
+    primeFactors(315);
+    return 0;
+}
+```
