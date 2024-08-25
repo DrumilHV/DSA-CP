@@ -174,3 +174,7 @@ vector<int> dijkstra(int V, vector<vector<int>> adj[], int S){
     return distTo;
 }
 ```
+
+- Time Complexity: O( E log(V) ), Where E = Number of edges and V = Number of Nodes.
+
+- Space Complexity: O( |E| + |V| ), Where E = Number of edges and V = Number of Nodes.

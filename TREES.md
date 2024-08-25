@@ -90,6 +90,33 @@ void LevelOrderTraversal(root){
 }
 ```
 
+## BUILD A TREE FROM AN ARRAY.
+
+```cpp
+TreeNode* buildTree(vector<int>& nums) {
+    if (nums.empty()) {
+        return NULL;
+    }
+    TreeNode* root = new TreeNode(nums[0]);
+    queue<TreeNode*> q;
+    q.push(root);
+    int i = 1;
+    while (i < nums.size()) {
+        TreeNode* curr = q.front();
+        q.pop();
+        if (i < nums.size()) {
+            curr->left = new TreeNode(nums[i++]);
+            q.push(curr->left);
+        }
+        if (i < nums.size()) {
+            curr->right = new TreeNode(nums[i++]);
+            q.push(curr->right);
+        }
+    }
+    return root;
+}
+```
+
 ## preorder traversal
 
 ```cpp
