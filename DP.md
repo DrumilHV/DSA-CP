@@ -436,6 +436,26 @@ int minPathSum(vector<vector<int>>& grid) {
 }
 ```
 
+19. You are house robber, you can steal either 2 or 3 houses continously , if you rob 2 house you leave one gap , if you rob 3 houes you leave 2 gaps, maximize his profit.
+
+```cpp
+// 1 based indexing
+int MaxRobbry(vector<int> houses){
+  int n = houses.size();
+  int dp[n][3]; // dp[2] = 2 countinous house robbries dp state, dp[3] = 3 countinous house robbries dp state
+  dp[1][2] = houses[0];
+  dp[1][3] = houses[0];
+  dp[2][2] = max(houses[1] + houses[2],dp[1][2]);
+  dp[2][3] = max(houses[1] + houses[2],dp[2][3]);
+  dp[3][2] = max(houses[2] + houses[3],dp[2][2]);
+  dp[3][3] = max(houses[2] + houses[3], dp[2][3]);
+
+  for(int i =4;i<n;i++){
+    dp[i][2] = houses[i] + houses[i-1] + max({dp[i-3][2], dp[i-4][2],dp[i-4][3], dp[i-5][2],dp[i-5][3]);
+  }
+
+```
+
 # Partition DP
 
 ### General concept of solving PARTITION DP => DP[I] will tell total number of partition till i in the array
