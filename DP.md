@@ -519,7 +519,7 @@ int count(vector<int>& coins, int n, int sum){
 }
 ```
 
-22. you have 2 strings , you need to find the longest subsequence from both the strings
+22. you have 2 strings , you need to find the longest common subsequence from both the strings
 
 ```cpp
 class Solution {
