@@ -434,6 +434,26 @@ int minPathSum(vector<vector<int>>& grid) {
   }
   return dp[m-1][n-1];
 }
+//OR
+int count(int coins[], int n, int sum){
+  // table[i] will be storing the number of solutions for
+  // value i. We need sum+1 rows as the dp is
+  // constructed in bottom up manner using the base case
+  // (sum = 0)
+  int dp[sum + 1];
+  // Initialize all table values as 0
+  memset(dp, 0, sizeof(dp));
+  // Base case (If given value is 0)
+  dp[0] = 1;
+
+  // Pick all coins one by one and update the table[]
+  // values after the index greater than or equal to the
+  // value of the picked coin
+  for (int i = 0; i < n; i++)
+    for (int j = coins[i]; j <= sum; j++)
+      dp[j] += dp[j - coins[i]];
+  return dp[sum];
+}
 ```
 
 19. You are house robber, you can steal either 2 or 3 houses continously , if you rob 2 house you leave one gap , if you rob 3 houes you leave 2 gaps, maximize his profit.
@@ -454,6 +474,50 @@ int MaxRobbry(vector<int> houses){
     dp[i][2] = houses[i] + houses[i-1] + max({dp[i-3][2], dp[i-4][2],dp[i-4][3], dp[i-5][2],dp[i-5][3]);
   }
 
+```
+
+20. you have a number n , you have to find perfect squares which sum up to n, return the min no of prefect squares required to make n.
+
+```cpp
+int numSquares(int n) {
+  vector<int> dp(n+1, 1e9);
+  dp[0] = 0; // you need 0 perfect squares to make 0
+  for(int i = 1;i<=n;i++){
+    for(int j = 1;j*j<=i;j++){
+      dp[i] = min(dp[i], dp[i-j*j] + 1);
+    }
+  }
+  return dp[n];
+}
+```
+
+21. total no of ways to make coin change.
+
+```cpp
+/ Returns total distinct ways to make sum using n coins of
+// different denominations
+int count(vector<int>& coins, int n, int sum){
+  // 2d dp array where n is the number of coin
+  // denominations and sum is the target sum
+  vector<vector<int> > dp(n + 1, vector<int>(sum + 1, 0));
+  // Represents the base case where the target sum is 0,
+  // and there is only one way to make change: by not
+  // selecting any coin
+  dp[0][0] = 1;
+  for (int i = 1; i <= n; i++) {
+    for (int j = 0; j <= sum; j++) {
+      // Add the number of ways to make change without
+      // using the current coin,
+      dp[i][j] += dp[i - 1][j];
+      if ((j - coins[i - 1]) >= 0) {
+        // Add the number of ways to make change
+        // using the current coin
+        dp[i][j] += dp[i][j - coins[i - 1]];
+      }
+    }
+  }
+  return dp[n][sum];
+}
 ```
 
 # Partition DP
