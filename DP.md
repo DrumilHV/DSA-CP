@@ -542,6 +542,104 @@ public:
 };
 ```
 
+23. you have an array , you are given 3 numbers p, q, r-> you have to delete p inividaual no, q consicutive pairs, and r consicutive triplets. you have to return max sum of remanining elements, and you have to do in order, p then q then r and then p and so onn....
+    [link](https://docs.google.com/document/d/1GYwco4OuNB3RNbSFbw7Qn3XNAd1K8f0zGvehMkaN7GY/edit)
+
+- sol: you can do in any order, as you are not deleting index, you are only keeping index blank,
+- make 4D dp.
+
+```cpp
+typedef long long int ll;
+ll dp[105][30][30][30];
+int main() {
+
+  ll n;cin>>n;
+  ll b[n+1] = {0};
+  for(ll i=1;i<=n;i++){
+      cin>>b[i];
+  }
+  ll p,q,r;cin>>p>>q>>r ;
+
+  for(ll i=0;i<=100;i++){
+      for(ll j=0;j<=30;j++){
+          for(ll k=0;k<=30;k++){
+              for(ll l=0;l<=30;l++){
+                  dp[i][j][k][l] = -1e18;
+              }
+          }
+      }
+  }
+  dp[1][0][0][0] = b[1];ll r5 = b[1] ;
+  dp[0][0][0][0] = 0 ;
+  dp[1][1][0][0] = 0 ;
+  for(ll i=2;i<=n;i++){ r5 = r5 + b[i];
+    for(ll j=0;j<=p;j++){
+      for(ll k=0;k<=q;k++){
+        for(ll l=0;l<=r;l++){
+          ll g = j + 2*k + 3*l;
+          if(g==0){
+            dp[i][0][0][0] = r5 ;
+            cout<<i<<" "<<j<<" "<<k<<" "<<l<<" "<<dp[i][j][k][l]<<"\n";
+          }
+          else if(g<=i){
+            ll o1 = -1e18;
+            if(g<=i-1){
+              o1 = b[i] + dp[i-1][j][k][l] ;
+            }
+            ll o5 = -1e18;
+            if(j>=1 && i>=1){
+                o5 = dp[i-1][j-1][k][l];
+            }
+            ll o8 = -1e18;
+            if(k>=1 && i>=2){
+                o8 = dp[i-2][j][k-1][l];
+            }
+            ll o15 = -1e18;
+            if(l>=1 && i>=3){
+                o15 = dp[i-3][j][k][l-1];
+            }
+            dp[i][j][k][l] = max(o1,max(o5,max(o8,o15)));
+            cout<<i<<" "<<j<<" "<<k<<" "<<l<<" "<<dp[i][j][k][l]<<"\n";
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+24. You are given an array , you can only jump to indexes grater than current index, the score of the array is you are at i and jump to j , score = (j-i)\*nums[i]. return the max score you can get.
+
+[link](https://leetcode.com/problems/reach-end-of-array-with-max-score/description/)
+
+`
+
+- eg: Input: nums = [4,3,1,3,2]
+- Output: 16
+- Explanation:
+  Jump directly to the last index. The final score is 4 \* 4 = 16.
+  `
+- sol: 2d dp,
+- make a state for every i to j .
+
+```cpp
+long long findMaximumScore(vector<int>& nums) {
+  int n = nums.size();
+  vector<ll> dp(n,0);
+  for(int i =0;i<n;i++){
+    dp[i] = (i-0) * nums[0];
+  }
+  for(int i =1;i<n;i++){
+    vector<ll> temp(n,0);
+    for(int j = i;j<n;j++){
+      temp[j] = max((ll)nums[i]*(j-i) + dp[i], dp[j]);
+    }
+    dp = temp;
+  }
+  return dp[n-1];
+}
+```
+
 # Partition DP
 
 ### General concept of solving PARTITION DP => DP[I] will tell total number of partition till i in the array
