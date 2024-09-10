@@ -640,6 +640,58 @@ long long findMaximumScore(vector<int>& nums) {
 }
 ```
 
+25. find the bigges + sing a grid of 1 s and 0 s, [link](https://leetcode.com/problems/largest-plus-sign/submissions/1385359783/)
+
+- sol: make a dp array of up , left , right, down
+- take min of all 4 dp array at every index. and take mix all the mins.
+
+```cpp
+
+int orderOfLargestPlusSign(int n, vector<vector<int>>& mines) {
+  vector<vector<int>> grid(n, vector<int>(n, 1));
+  for (auto it : mines) {
+    grid[it[0]][it[1]] = 0;
+  }
+  vector<vector<int>> up = grid, down = grid, left = grid, right = grid;
+  for (int i = 1; i < n; i++) {
+    for (int j = 0; j < n; j++) {
+        if (up[i][j]) {
+          up[i][j] += up[i - 1][j];
+        }
+    }
+  }
+  for (int i = 0; i < n; i++) {
+    for (int j = 1; j < n; j++) {
+        if (left[i][j]) {
+          left[i][j] += left[i][j - 1];
+        }
+    }
+  }
+  for (int i = n - 2; i >= 0; i--) {
+    for (int j = 0; j < n; j++) {
+        if (down[i][j]) {
+          down[i][j] += down[i + 1][j];
+        }
+    }
+  }
+  for (int i = 0; i < n; i++) {
+    for (int j = n - 2; j >= 0; j--) {
+        if (down[i][j]) {
+          right[i][j] += right[i][j + 1];
+        }
+    }
+  }
+  int maxi = 0;
+  for(int i =0;i<n;i++){
+    for(int j = 0;j<n;j++){
+      int area = min({left[i][j], up[i][j], down[i][j], right[i][j]});
+      maxi = max(area, maxi);
+    }
+  }
+  return maxi;
+}
+```
+
 # Partition DP
 
 ### General concept of solving PARTITION DP => DP[I] will tell total number of partition till i in the array
