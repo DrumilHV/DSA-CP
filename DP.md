@@ -720,6 +720,29 @@ for (int i = n - 1; i >= 0; i--) {
 }
 ```
 
+27. BUY AND SELL STOCK WITH COOL DOWN
+
+- you can do 2 things buy or sell -> 2 states
+- now you can decide to excrsice buy or not, excrsice sell or not.
+- you take max of both possibilities for each state.
+- dp[i][0] = max(p[i] + dp[i + 2][1], 0 + dp[i + 1][0]) => because you sell today and wait for one day and after cool down you buy on day after.
+
+```CPP
+
+int maxProfit(vector<int>& p) {
+  int n = p.size();
+  vector<vector<int>> dp(n + 2, vector<int>(2));
+  for(int i=n-1; i>=0; i--) {
+   for (int i = n - 1; i >= 0; i--) {
+      dp[i][0] = max(p[i] + dp[i + 2][1], 0 + dp[i + 1][0]);
+      dp[i][1] = max(-p[i] + dp[i + 1][0], 0 + dp[i + 1][1]);
+    }
+  }
+  return dp[0][1];
+}
+
+```
+
 # Partition DP
 
 ### General concept of solving PARTITION DP => DP[I] will tell total number of partition till i in the array
