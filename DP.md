@@ -646,7 +646,6 @@ long long findMaximumScore(vector<int>& nums) {
 - take min of all 4 dp array at every index. and take mix all the mins.
 
 ```cpp
-
 int orderOfLargestPlusSign(int n, vector<vector<int>>& mines) {
   vector<vector<int>> grid(n, vector<int>(n, 1));
   for (auto it : mines) {
@@ -689,6 +688,35 @@ int orderOfLargestPlusSign(int n, vector<vector<int>>& mines) {
     }
   }
   return maxi;
+}
+```
+
+26. BEST TIME TO BUY AND SELL STOCK - 2
+
+```You are given an integer array prices where prices[i] is the price of a given stock on the ith day.
+
+On each day, you may decide to buy and/or sell the stock. You can only hold at most one share of the stock at any time. However, you can buy it then immediately sell it on the same day.
+
+Find and return the maximum profit you can achieve.
+```
+
+```cpp
+int n = p.size();
+vector<vector<int>> dp(n + 1, vector<int>(2, 0));
+for (int i = n - 1; i >= 0; i--) {
+  for (int buy = 0; buy <= 1; buy++) {
+    int profit;
+    if (buy) {
+      int buy = -p[i] + dp[i + 1][0];
+      int notbuy = dp[i + 1][1];
+      profit = max(buy, notbuy);
+    } else {
+      int sell = p[i] + dp[i + 1][1];
+      int notsell = dp[i + 1][0];
+      profit = max(sell, notsell);
+    }
+    dp[i][buy] = profit;
+  }
 }
 ```
 
