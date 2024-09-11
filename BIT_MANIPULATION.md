@@ -40,3 +40,65 @@ for(int i =0;i<n;i++){
 
 - make 32 hash map of weak point such that hashmap[4] has recent where 4 th idx was 1 or make an arary of size 32
 - make right lim and left lim, such that arr[i] = first time 0 is found on index i,
+
+```cpp
+
+typedef long long int ll;
+int jth_bit(ll n, int j) {
+    return (n >> j) & 1;
+}
+int main() {
+    ll up[25]={0};
+    ll n;ll c = 0 ;
+    cin>>n;
+    ll b[n+1]={0};ll mp[25];ll left_limit[n+1] = {0};ll right_limit[n+1]={0};unordered_map <ll,ll> g;
+    for(ll i=1;i<=n;i++){
+        cin>>b[i];right_limit[i] = n + 1 ;
+    }
+    for(ll i=0;i<=20;i++){
+        mp[i] = n + 1 ;
+    }
+    ll i = n ;
+    while(i>=1){
+        ll y = n + 1 ;
+        for(int j=0;j<=20;j++){
+            ll d = jth_bit(b[i],j);
+            if(d==0){
+                y = min(y,mp[j]);
+            }
+            if(d==1){
+                mp[j] = i ;
+            }
+
+            right_limit[i] = (y);
+            if(g[b[i]]!=0){
+                right_limit[i] = min(right_limit[i],g[b[i]]);
+            }
+        }
+        g[b[i]] = i;i--;
+    }
+    i = 1 ;
+    while(i<=n){
+        ll y = 0 ;
+        for(int j=0;j<=20;j++){
+            ll d = jth_bit(b[i],j);
+            if(d==0){
+                y = max(y,up[j]);
+            }
+            if(d==1){
+                up[j] = i ;
+            }
+            left_limit[i] = y;
+        }
+        i++;
+    }
+    for(ll i=1;i<=n;i++){
+        ll x = left_limit[i];
+        ll y = right_limit[i];cout<<i<<" "<<x<<" "<<y<<" ";
+        ll x1 = abs(i-x)-1; ll y1 = abs(y-i)-1;
+        c = c + x1 + y1 + x1*y1 + 1 ; cout<<x1<<" "<<y1<<"\n";
+    }
+    cout<<c;
+    return 0;
+}
+```
