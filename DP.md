@@ -572,7 +572,8 @@ int main() {
   dp[1][0][0][0] = b[1];ll r5 = b[1] ;
   dp[0][0][0][0] = 0 ;
   dp[1][1][0][0] = 0 ;
-  for(ll i=2;i<=n;i++){ r5 = r5 + b[i];
+  for(ll i=2;i<=n;i++){
+    r5 = r5 + b[i];
     for(ll j=0;j<=p;j++){
       for(ll k=0;k<=q;k++){
         for(ll l=0;l<=r;l++){
@@ -704,12 +705,10 @@ Find and return the maximum profit you can achieve.
 int n = p.size();
 vector<vector<int>> dp(n + 1, vector<int>(2, 0));
 for (int i = n - 1; i >= 0; i--) {
-  for (int i = n - 1; i >= 0; i--) {
-      dp[i][0] = max(p[i] + dp[i + 1][1], dp[i + 1][0]);
-      dp[i][1] = max(-p[i] + dp[i + 1][0], dp[i + 1][1]);
-    }
-    return dp[0][1];
-}
+    dp[i][0] = max(p[i] + dp[i + 1][1], dp[i + 1][0]);
+    dp[i][1] = max(-p[i] + dp[i + 1][0], dp[i + 1][1]);
+  }
+  return dp[0][1];
 ```
 
 27. BUY AND SELL STOCK WITH COOL DOWN
@@ -724,15 +723,38 @@ for (int i = n - 1; i >= 0; i--) {
 int maxProfit(vector<int>& p) {
   int n = p.size();
   vector<vector<int>> dp(n + 2, vector<int>(2));
-  for(int i=n-1; i>=0; i--) {
-   for (int i = n - 1; i >= 0; i--) {
-      dp[i][0] = max(p[i] + dp[i + 2][1], 0 + dp[i + 1][0]);
-      dp[i][1] = max(-p[i] + dp[i + 1][0], 0 + dp[i + 1][1]);
-    }
+  for (int i = n - 1; i >= 0; i--) {
+    dp[i][0] = max(p[i] + dp[i + 2][1], 0 + dp[i + 1][0]);
+    dp[i][1] = max(-p[i] + dp[i + 1][0], 0 + dp[i + 1][1]);
   }
   return dp[0][1];
 }
 
+```
+
+28. BEST TIME TO BUY AND SELL STOCK III- max 2 transactions.
+
+```cpp
+int n=prices.size();
+vector<vector<vector<int>>> dp(n+1,vector<vector<int>> (2,vector<int> (3,0)));
+for(int index=n-1;index>=0;index--){
+  for(int buy=0;buy<=1;buy++){
+    for(int limit=1;limit<=2;limit++){
+      int profit=0;
+      if(buy){
+        int buykaro=-prices[index]+dp[index+1][0][limit];
+        int skipkaro=0+dp[index+1][1][limit];
+        profit=max(buykaro,skipkaro);
+      }else{
+        int sellkaro=+prices[index]+dp[index+1][1][limit-1];
+        int ignorekaro=0+dp[index+1][0][limit];
+        profit=max(sellkaro,ignorekaro);
+      }
+      dp[index][buy][limit]=profit;
+    }
+  }
+}
+return dp[0][1][2];
 ```
 
 # Partition DP
