@@ -757,6 +757,33 @@ for(int index=n-1;index>=0;index--){
 return dp[0][1][2];
 ```
 
+29. [Frog Jump](https://leetcode.com/problems/frog-jump/description/) you are given a sorted array , you have to reach the last index of array . if you stand on arr[idx] you can only jump to next elment = arr[idx]-1 || arr[idx] || arr[idx]+1. you can not go back.
+
+```cpp
+map<int, int> mp;
+vector<int> s;
+vector<vector<int>> dp;
+bool fun(int ind, int k) {
+  if (k <= 0)
+      return 0;
+  if (ind == s.size() - 1)
+      return 1;
+  if (!mp[s[ind] + k])
+      return 0;
+  if (dp[ind][k] != -1)
+      return dp[ind][k];
+  return dp[ind][k] = (fun(mp[s[ind] + k] , k) || fun(mp[s[ind] + k] , k - 1) || fun(mp[s[ind] + k] , k + 1));
+}
+bool canCross(vector<int>& stones) {
+  dp.resize(2001, vector<int>(2001, -1));
+  int n = stones.size();
+  s = stones;
+  for (int i = 0; i < n; i++)
+    mp[stones[i]] = i ;
+  return fun(0, 1);
+}
+```
+
 # Partition DP
 
 ### General concept of solving PARTITION DP => DP[I] will tell total number of partition till i in the array
