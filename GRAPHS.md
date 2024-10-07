@@ -80,7 +80,7 @@ vector<int> bfsOfGraph(int V, vector<int> adj[]) {
         int node = q.front();
         q.pop();
         bfs.push_back(node);
-        
+
         // traverse for all its neighbours
         for(auto it : adj[node]) {
             // if the neighbour has previously not been visited,
@@ -179,3 +179,39 @@ vector<int> dijkstra(int V, vector<vector<int>> adj[], int S){
 
 - Space Complexity: O( |E| + |V| ), Where E = Number of edges and V = Number of Nodes.
 
+1.  Given an undirected acyclic graph with all of the vertices having at most 3 neighbors. Please find a vertex in the tree so that after setting the vertex as root it forms a valid binary tree
+
+Observation
+
+- Given graph is a tree -> such that each node has maximum 3 edges.
+
+- We are given a tree; where each node <= 3 edges.
+- We have to decide which node should be selected as the root so that the tree becomes a binary tree.
+- Each node of a binary tree has 2 children.
+- The input tree will have this property - each node will have at max 2 children except the root node. (-> root node can have 3 children which distorts the validity of being a binary tree.)
+
+- SOL: Select a node which has 2 edges or 1 edge(best option) - then it can always be converted to a binary tree.
+
+- -> Proof :- The only problem is that the root of the input tree might have 3 children or else the problem is already solved. The root is assumed for input tree is the answer if it is already attached to two nodes only
+
+- -> In case; the root has 3 child; then selecting the leaf of the tree always works.
+
+```
+     1
+   / | \
+   2 3  4
+  / \    \
+ 5   6    7
+```
+
+===
+
+```
+     3
+     |
+     1
+   /  \
+   2    4
+  / \    \
+ 5   6    7
+```

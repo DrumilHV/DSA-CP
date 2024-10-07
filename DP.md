@@ -757,7 +757,7 @@ for(int index=n-1;index>=0;index--){
 return dp[0][1][2];
 ```
 
-29. [Frog Jump](https://leetcode.com/problems/frog-jump/description/) you are given a sorted array , you have to reach the last index of array . if you stand on arr[idx] you can only jump to next elment = arr[idx]-1 || arr[idx] || arr[idx]+1. you can not go back.
+29. [Frog Jump](https://leetcode.com/problems/frog-jump/description/) you are given a sorted array , you have to reach the last index of array . if you stand on arr[idx] you can only jump to next elment = arr[idx]-1 || arr[idx] || arr[idx]+1. you can not go back.j
 
 ```cpp
 map<int, int> mp;
