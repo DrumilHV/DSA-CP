@@ -181,7 +181,7 @@ vector<int> dijkstra(int V, vector<vector<int>> adj[], int S){
 
 1.  Given an undirected acyclic graph with all of the vertices having at most 3 neighbors. Please find a vertex in the tree so that after setting the vertex as root it forms a valid binary tree
 
-Observation
+- Observation
 
 - Given graph is a tree -> such that each node has maximum 3 edges.
 
@@ -214,4 +214,81 @@ Observation
    2    4
   / \    \
  5   6    7
+```
+
+2. You are maintaining a project that has n methods numbered from 0 to n - 1. You are given two integers n and k, and a 2D integer array invocations, where invocations[i] = [ai, bi] indicates that method ai invokes method bi.
+
+- There is a known bug in method k. Method k, along with any method invoked by it, either directly or indirectly, are considered suspicious and we aim to remove them.
+- A group of methods can only be removed if no method outside the group invokes any methods within it.
+- Return an array containing all the remaining methods after removing all the suspicious methods. You may return the answer in any order. If it is not possible to remove all the suspicious methods, none should be removed.
+
+```
+Example 1:
+Input: n = 4, k = 1, invocations = [[1,2],[0,1],[3,2]]
+Output: [0,1,2,3]
+Method 2 and method 1 are suspicious, but they are directly invoked by methods 3 and 0, which are not suspicious. We return all elements without removing anything.
+Example 2:
+Input: n = 5, k = 0, invocations = [[1,2],[0,2],[0,1],[3,4]]
+Output: [3,4]
+Explanation:
+Methods 0, 1, and 2 are suspicious and they are not directly invoked by any other method. We can remove them.
+Example 3:
+Input: n = 3, k = 2, invocations = [[1,2],[0,1],[2,0]]
+Output: []
+Explanation:
+All methods are suspicious. We can remove them.
+```
+
+```cpp
+vector<int> remainingMethods(int n, int k, vector<vector<int>>& edges) {
+    // Create an adjacency list to represent the graph of method invocations
+    vector<vector<int>> adj(n);
+    for (auto edge : edges) {
+        // For each edge (u, v), method u invokes method v
+        int u = edge[0], v = edge[1];
+        adj[u].push_back(v);  // Add v to the list of methods invoked by u
+    }
+
+    // Create a visited array to track suspicious methods (methods invoked directly/indirectly by k)
+    vector<int> vis(n, 0);
+
+    // Lambda function to perform depth-first search (DFS)
+    // This will mark all methods directly or indirectly invoked by method k as suspicious
+    auto dfs = [&](auto &&dfs, int u) {
+        if (vis[u]) return;  // If the method u is already visited, stop
+        vis[u] = 1;          // Mark method u as visited (suspicious)
+        for (int v : adj[u]) {
+            dfs(dfs, v);      // Recursively visit all methods invoked by u
+        }
+    };
+
+    // Perform DFS starting from method k to mark all suspicious methods
+    dfs(dfs, k);
+
+    // Flag to determine whether we need to keep all methods
+    bool takeAll = false;
+
+    // Check if any method outside the suspicious group invokes a suspicious method
+    for (auto edge : edges) {
+        int u = edge[0], v = edge[1];
+        // If method u is not suspicious but it invokes a suspicious method v,
+        // we cannot safely remove the suspicious group
+        if (!vis[u] && vis[v]) {
+            takeAll = true;  // Set the flag to indicate that we must keep all methods
+            break;
+        }
+    }
+
+    // Create a vector to store the remaining methods
+    vector<int> ans;
+    for (int i = 0; i < n; i++) {
+        // If we must keep all methods (takeAll is true) or the method is not suspicious,
+        // add it to the result
+        if (takeAll || !vis[i]) {
+            ans.push_back(i);
+        }
+    }
+    // Return the final list of remaining methods
+    return ans;
+}
 ```

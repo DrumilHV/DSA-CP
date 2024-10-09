@@ -958,3 +958,70 @@ for (int i = n - 1; i >= 1; i--) {
 }
 cout << dp[1] << endl;
 ```
+
+5. Given an array of size N and a number M, find the number of ways to partition the array into any number of contiguous parts such that the sum of each part is less than or equal to M.
+
+- Approach:
+
+  - Use dynamic programming to keep track of the number of ways to partition the array up to each position.
+  - Define dp[i] as the number of ways to partition the first i elements.
+  - For each position i, we consider all possible partitions that end at i.
+  - We start from i and move backwards, summing the elements.
+  - If the sum does not exceed M, we add dp[j - 1] to dp[i], where j is the starting index of the partition.
+  - The base case is dp[0] = 1, representing the empty partition.
+
+- Key Points:
+
+  - We consider all possible partitions ending at each position.
+  - By summing dp[j - 1], we account for all ways to partition the array up to the start of the current partition.
+
+```cpp
+// First Problem: Partition the array such that sum of each partition is less than or equal to M
+// Find the number of ways to partition the array
+vector<ll> dp(n + 1, 0); // dp[i] stores the number of ways to partition the first i elements
+dp[0] = 1; // Base case: there is 1 way to partition an empty array
+for (ll i = 1; i <= n; i++) {
+  ll sum = 0;
+  // Consider all possible partitions ending at position i
+  for (ll j = i; j >= 1; j--) {
+    sum += b[j]; // Sum of elements from b[j] to b[i]
+    if (sum > m) break; // If sum exceeds m, no need to consider further partitions
+    dp[i] += dp[j - 1]; // Add the number of ways to partition the array up to position j - 1
+  }
+}
+cout<<dp[n]
+```
+
+- FOLLOW UP
+- Given an array of size N, a number M, and a number K, find the number of ways to partition the array into exactly K contiguous parts such that the sum of each part is less than or equal to M.
+
+- SOL :
+- Use a 2D dynamic pr- ogramming array dp[i][k], where dp[i][k] represents the number of ways to partition the first i elements into k partitions.
+- Initialize dp[0][0] = 1, representing one way to partition 0 elements into 0 partitions.
+- For each position i and for each possible number of partitions k:
+- Consider all possible partitions that end at i.
+- For each starting position j, sum the elements from b[j] to b[i].
+- If the sum does not exceed M, add dp[j - 1][k - 1] to dp[i][k].
+- This represents the number of ways to partition the first j - 1 elements into k - 1 partitions.
+- The final answer is dp[n][K], the number of ways to partition the entire array into K partitions.
+
+```cpp
+// Second Problem: Partition the array into exactly K parts such that sum of each partition is less than or equal to M
+// Find the number of ways to partition the array into K partitions
+// dp[i][k] stores the number of ways to partition first i elements into k partitions
+vector<vector<ll>> dp(n + 1, vector<ll>(K + 1, 0));
+dp[0][0] = 1; // Base case: there is 1 way to partition 0 elements into 0 partitions
+for (ll i = 1; i <= n; i++) {
+  for (ll k = 1; k <= K; k++) {
+    ll sum = 0;
+    // Consider all possible partitions ending at position i
+    for (ll j = i; j >= 1; j--) {
+      sum += b[j]; // Sum of elements from b[j] to b[i]
+      if (sum > m) break; // If sum exceeds m, break the loop
+      dp[i][k] += dp[j - 1][k - 1]; // Add ways to partition up to position j - 1 into k - 1 partitions
+    }
+  }
+}
+cout << dp[n][K] << endl; // Output the total number of ways to partition the array into K partitions
+
+```
