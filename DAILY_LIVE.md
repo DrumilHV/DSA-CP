@@ -16,3 +16,11 @@ Each test case consists of three space-separated integers A, B, and K, as mentio
 - the graph of xi keeps increasing and decreasing
 - but overall keeps increasing.
 - pattern =
+
+### 25/10/25
+
+given an array of only x and y , find out the sub-array who have equal number of x and y.
+
+sol :
+make x = 1 and y = -1;
+then find all subarray whose sum == 0

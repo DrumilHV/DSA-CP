@@ -162,3 +162,65 @@ int main()
     return 0;
 }
 ```
+
+7. FIND MAX LCM \* GCD OF AN ARRAY BY REMOBING AT MOST 1 ELEMENT
+   [3334. Find the Maximum Factor Score of Array](https://leetcode.com/problems/find-the-maximum-factor-score-of-array/description/)
+
+```CPP
+long long maxScore(vector<int>& nums) {
+    int n = nums.size();
+    long long ans = 0;
+    for (int i = 0; i <= n; i++) {
+        vector<int> a;
+        for (int j = 0; j < n; j++) {
+            if (i != j)
+                a.push_back(nums[j]);
+        }
+        if (a.empty())
+            continue;
+        long long g = a[0], l = a[0];
+        for (int j = 1; j < a.size(); j++) {
+            g = gcd(g, a[j]);
+            l = lcm(l, a[j]);
+        }
+        ans = max(ans, l * g);
+    }
+    return ans;
+```
+
+TC: O(N^2 logN)
+
+[BETTER TIME COMPLEXITY: O(N LOG N)](https://leetcode.com/problems/find-the-maximum-factor-score-of-array/solutions/5973452/calculate-prefix-and-suffix-for-both-lcm-and-gcd/)
+
+```CPP
+long long maxScore(vector<int>& nums) {
+    int n = nums.size();
+    if (n == 0) return 0;
+    if (n == 1) return nums[0] * nums[0];
+    vector<int> pregcd(n, 0), postgcd(n, 0);
+    vector<long long> prelcm(n, 0), postlcm(n, 0);
+    pregcd[0] = prelcm[0] = nums[0];
+    --n;
+    for (int i = 1; i <= n; ++i) {
+        pregcd[i] = gcd(nums[i], pregcd[i - 1]);
+        prelcm[i] = lcm(prelcm[i - 1], nums[i]);
+    }
+    postgcd[n] = postlcm[n] = nums[n];
+    for (int i = n - 1; i >= 0; --i) {
+        postgcd[i] = gcd(nums[i], postgcd[i + 1]);
+        postlcm[i] = lcm(postlcm[i + 1], nums[i]);
+    }
+    long long res = max(
+        max(postlcm[0] * postgcd[0], postlcm[1] * postgcd[1]),
+        prelcm[n - 1] * pregcd[n - 1]
+    );
+    long long cur;
+    for (int i = 1; i < n; ++i) {
+        cur = lcm(prelcm[i - 1], postlcm[i + 1]) *
+                gcd(pregcd[i - 1], postgcd[i + 1]);
+        res = max(cur, res);
+    }
+    return res;
+}
+
+```
