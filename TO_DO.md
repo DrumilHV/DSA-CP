@@ -5,3 +5,5 @@
 5. Rabin Karp
 6. z algo
 7. Rolling Hash
+8. segment trees
+9. 
