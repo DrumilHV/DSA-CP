@@ -41,7 +41,7 @@ void preorder(root){
 }
 ```
 
-- preorder -> root left right
+- inorder -> root left right
 
 ```cpp
 void preorder(root){
