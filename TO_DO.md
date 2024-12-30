@@ -6,4 +6,9 @@
 6. z algo
 7. Rolling Hash
 8. segment trees
-9. 
+9. 0-1 BFS, 1 - K BFS(gpaphs)
+10. DSU (connected componetnts)
+11. Binary exponentiation
+    
+          
+
