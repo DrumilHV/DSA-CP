@@ -1070,3 +1070,45 @@ for (ll i = 1; i <= n; i++) {
 cout << dp[n][K] << endl; // Output the total number of ways to partition the array into K partitions
 
 ```
+# DP WITH STRINGS
+1. Longest Common Subsequence (length)
+
+- sol: 
+- Recusive
+```cpp
+int lcsUtil(string &s1, string &s2, int ind1, int ind2,vector<vector<int>> &dp) {
+  // Base case: If either string reaches the end, return 0
+  if (ind1 < 0 || ind2 < 0)
+    return 0;
+
+  // If the result for this pair of indices is already calculated, return it
+  if (dp[ind1][ind2] != -1)
+    return dp[ind1][ind2];
+
+  // If the characters at the current indices match, increment the LCS length
+  if (s1[ind1] == s2[ind2])
+    return dp[ind1][ind2] = 1 + lcsUtil(s1, s2, ind1 - 1, ind2 - 1, dp);
+  else
+    // If the characters don't match, consider two options: moving either left
+    // or up in the strings
+    return dp[ind1][ind2] = max(lcsUtil(s1, s2, ind1, ind2 - 1, dp),lcsUtil(s1, s2, ind1 - 1, ind2, dp));
+}
+```
+- Tabulation
+```cpp
+int LCS(string s, string t) {
+  int m = t.size();
+  int n = s.size;
+  vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+  for (int i = 1; i < n; i++) {
+    for (int j = 1; j < m; j++) {
+      if (s[i - 1] == t[j - 1]) {
+        dp[i][j] = 1 + dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+      }
+    }
+  }
+}
+return dp[n][m];
+```
