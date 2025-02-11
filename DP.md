@@ -869,7 +869,7 @@ for (int i = 1; i <= n; i++) {
 }
 ```
 
-2. Just tell true or false; tell true if it is possible to divide the array in a partition such that each part is good. [i…………….j] is good if and only if := b[i] = abs(i-j)
+32. Just tell true or false; tell true if it is possible to divide the array in a partition such that each part is good. [i…………….j] is good if and only if := b[i] = abs(i-j)
 
 - eg: [4,2,8,1] -> bad because, there should be 4 numbers after 4 but only 3 are found.
 - so make arr[0] = 3 , so 3 numbers after 3 will make it good.
@@ -929,7 +929,7 @@ return dp[n].
   }
 ```
 
-3. find the min moves to make the array harmounious. <br> Harmonious array is the one which has the exact number of elements follwoin it as on arr[i]. you can delete any number.
+33. find the min moves to make the array harmounious. <br> Harmonious array is the one which has the exact number of elements follwoin it as on arr[i]. you can delete any number.
 
 - eg: [1,8,3,4,7,6] => [1,8], [3,4,7,6] => one element after arr[0] (=1), 3 elements after arr[2] (=3)
 - to make the array harmonious, you need to delete the min no of elements.
@@ -1004,7 +1004,7 @@ for (int i = n - 1; i >= 1; i--) {
 cout << dp[1] << endl;
 ```
 
-5. Given an array of size N and a number M, find the number of ways to partition the array into any number of contiguous parts such that the sum of each part is less than or equal to M.
+- 34 & 35. Given an array of size N and a number M, find the number of ways to partition the array into any number of contiguous parts such that the sum of each part is less than or equal to M.
 
 - Approach:
 
@@ -1071,7 +1071,7 @@ cout << dp[n][K] << endl; // Output the total number of ways to partition the ar
 
 ```
 # DP WITH STRINGS
-1. Longest Common Subsequence (length)
+36. Longest Common Subsequence (length)
 
 - sol: 
 - Recusive
@@ -1111,4 +1111,95 @@ int LCS(string s, string t) {
   }
 }
 return dp[n][m];
+```
+- Longest Common sequence (string)
+
+```cpp
+class Solution {
+public:
+  string shortestCommonSupersequence(string str1, string str2) {
+    int n = str1.size();
+    int m = str2.size();
+
+    // Step 1: Compute the Longest Common Subsequence (LCS) DP table
+    vector<vector<int>> memo(n + 1, vector<int>(m + 1, 0));
+
+    for (int i = 1; i <= n; i++) {
+      for (int j = 1; j <= m; j++) {
+        if (str1[i - 1] == str2[j - 1])
+          memo[i][j] = 1 + memo[i - 1][j - 1];
+        else
+          memo[i][j] = max(memo[i - 1][j], memo[i][j - 1]);
+      }
+    }
+
+    // Step 2: Backtrack to construct the Shortest Common Supersequence
+    string ans = "";
+    int i = n, j = m;
+
+    while (i > 0 && j > 0) {
+      if (str1[i - 1] == str2[j - 1]) {
+        ans.push_back(str1[i - 1]);
+        i--;
+        j--;
+      } else if (memo[i - 1][j] >= memo[i][j - 1]) {
+        ans.push_back(str1[i - 1]);
+        i--;
+      } else {
+        ans.push_back(str2[j - 1]);
+        j--;
+      }
+    }
+    reverse(ans.begin(), ans.end());
+    return ans;
+  }
+};
+```
+- Shortest Common string which has both strings as substring
+    - Same as longest common sequence (String)+ add the remanining contents of string 1 and then remainder of string 2;
+```cpp
+// Add remaining characters from str1 and str2
+while (i > 0) {
+  ans.push_back(str1[i - 1]);
+  i--;
+}
+while (j > 0) {
+  ans.push_back(str2[j - 1]);
+  j--;
+}
+
+reverse(ans.begin(), ans.end());
+return ans;
+}
+```
+- Given two strings s and t, return the number of distinct subsequences of s which equals t.
+
+Input: s = "rabbbit", t = "rabbit"
+Output: 3
+Explanation:
+As shown below, there are 3 ways you can generate "rabbit" from s.
+rabbbit
+rabbbit
+rabbbit
+
+```cpp
+int numDistinct(string s, string t) {
+  int n = s.size();
+  int m = t.size();
+  vector<vector<double>> dp(n + 1, vector<double>(m + 1, 0));
+  int i, j;
+  for (i = 0; i <= n; i++)
+    dp[i][0] = 1;
+
+  for (i = 1; i <= n; i++) {
+    for (j = 1; j <= m; j++) {
+      if (s[i - 1] == t[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+      } else
+        dp[i][j] = dp[i - 1][j];
+    }
+  }
+  return dp[n][m];
+}
+
 ```
