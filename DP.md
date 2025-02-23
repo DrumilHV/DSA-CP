@@ -1070,11 +1070,14 @@ for (ll i = 1; i <= n; i++) {
 cout << dp[n][K] << endl; // Output the total number of ways to partition the array into K partitions
 
 ```
+
 # DP WITH STRINGS
+
 36. Longest Common Subsequence (length)
 
-- sol: 
+- sol:
 - Recusive
+
 ```cpp
 int lcsUtil(string &s1, string &s2, int ind1, int ind2,vector<vector<int>> &dp) {
   // Base case: If either string reaches the end, return 0
@@ -1094,7 +1097,9 @@ int lcsUtil(string &s1, string &s2, int ind1, int ind2,vector<vector<int>> &dp) 
     return dp[ind1][ind2] = max(lcsUtil(s1, s2, ind1, ind2 - 1, dp),lcsUtil(s1, s2, ind1 - 1, ind2, dp));
 }
 ```
+
 - Tabulation
+
 ```cpp
 int LCS(string s, string t) {
   int m = t.size();
@@ -1112,6 +1117,7 @@ int LCS(string s, string t) {
 }
 return dp[n][m];
 ```
+
 - Longest Common sequence (string)
 
 ```cpp
@@ -1155,8 +1161,10 @@ public:
   }
 };
 ```
+
 - Shortest Common string which has both strings as substring
-    - Same as longest common sequence (String)+ add the remanining contents of string 1 and then remainder of string 2;
+  - Same as longest common sequence (String)+ add the remanining contents of string 1 and then remainder of string 2;
+
 ```cpp
 // Add remaining characters from str1 and str2
 while (i > 0) {
@@ -1172,6 +1180,7 @@ reverse(ans.begin(), ans.end());
 return ans;
 }
 ```
+
 - Given two strings s and t, return the number of distinct subsequences of s which equals t.
 
 Input: s = "rabbbit", t = "rabbit"
@@ -1202,4 +1211,42 @@ int numDistinct(string s, string t) {
   return dp[n][m];
 }
 
+```
+
+- Whild Card matching
+
+```cpp
+bool solve(int index1, int index2, string &text, string &pattern,
+           vector<vector<int>> &dp) {
+  if (index1 < 0 && index2 < 0)
+    return true;
+  if (index2 < 0 && index1 >= 0)
+    return false;
+  if (index1 < 0 && index2 >= 0) {
+    for (int i = 0; i <= index2; i++) {
+      if (pattern[i] != '*')
+        return false;
+    }
+    return true;
+  }
+  if (dp[index1][index2] != -1) {
+    return dp[index1][index2];
+  }
+  if (text[index1] == pattern[index2] || pattern[index2] == '?') {
+    return dp[index1][index2] = solve(index1 - 1, index2 - 1, text, pattern, dp);
+  }
+
+  if (pattern[index2] == '*') {
+    return dp[index1][index2] = solve(index1 - 1, index2, text, pattern, dp) ||solve(index1, index2 - 1, text, pattern, dp);
+  }
+
+  return dp[index1][index2] = false;
+}
+
+bool isMatch(string s, string p) {
+  int n1 = s.size();
+  int n2 = p.size();
+  vector<vector<int>> dp(n1, vector<int>(n2, -1));
+  return solve(n1 - 1, n2 - 1, s, p, dp);
+}
 ```
